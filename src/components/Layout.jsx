@@ -5,6 +5,8 @@ import { ShippingCart } from "./ShippingCart";
 
 export default function Layout() {
   const products = useSelector((state) => state.products);
+  const state = useSelector((state) => state);
+  // console.log("state",state)
 
   return (
     <>
