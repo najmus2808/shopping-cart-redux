@@ -1,12 +1,7 @@
 export const addHandler = (state, id) => {
   const stateObj = { ...state };
   const item = stateObj.products.find((item) => item.id === id);
-  console.log("add", id);
-  console.log("add", stateObj.cartItems);
-
   const isExist = stateObj.cartItems.findIndex((item) => item.id === id);
-  console.log("add", isExist);
-
   let objIndex = [...stateObj.products].findIndex((item) => item.id === id);
   stateObj.products[objIndex].stockQuantity =
     stateObj.products[objIndex].stockQuantity - 1;

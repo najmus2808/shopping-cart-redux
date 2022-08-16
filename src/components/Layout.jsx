@@ -5,9 +5,7 @@ import { ShippingCart } from "./ShippingCart";
 
 export default function Layout() {
   const products = useSelector((state) => state.products);
-  const state = useSelector((state) => state);
-  console.log(products);
-  console.log(state);
+
   return (
     <>
       <div className="bg-gray-50 h-full md:h-screen">
