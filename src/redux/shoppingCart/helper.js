@@ -1,22 +1,29 @@
 export const addHandler = (state, id) => {
   const stateObj = { ...state };
-  const item = stateObj.products.find((item) => item.id === id);
-  const isExist = stateObj.cartItems.findIndex((item) => item.id === id);
-  let objIndex = [...stateObj.products].findIndex((item) => item.id === id);
-  stateObj.products[objIndex].stockQuantity =
-    stateObj.products[objIndex].stockQuantity - 1;
+  const productsNew = [...stateObj.products];
+  const cartItemsNew = [...stateObj.cartItems];
+  const item = productsNew.find((item) => item.id === id);
+  const isExist = cartItemsNew.findIndex((item) => item.id === id);
 
   if (isExist === -1) {
+    let objIndex = productsNew.findIndex((item) => item.id === id);
+    productsNew[objIndex].stockQuantity =
+      productsNew[objIndex].stockQuantity - 1;
     return {
       ...stateObj,
-      cartItems: [...stateObj.cartItems, { ...item, quantity: 1 }],
+      products: [...productsNew],
+      cartItems: [...cartItemsNew, { ...item, quantity: 1 }],
     };
   } else {
-    let objIndex = [...stateObj.cartItems].findIndex((item) => item.id === id);
-    stateObj.cartItems[objIndex].quantity =
-      stateObj.cartItems[objIndex]?.quantity + 1;
+    let objIndex = cartItemsNew.findIndex((item) => item.id === id);
+    cartItemsNew[objIndex].quantity = cartItemsNew[objIndex]?.quantity + 1;
+    let productIndex = productsNew.findIndex((item) => item.id === id);
+    productsNew[productIndex].stockQuantity =
+      productsNew[productIndex].stockQuantity - 1;
     return {
       ...stateObj,
+      products: [...productsNew],
+      cartItems: [...cartItemsNew],
     };
   }
 };
