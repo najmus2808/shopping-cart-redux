@@ -12,7 +12,7 @@ export const addHandler = (state, id) => {
     return {
       ...stateObj,
       products: [...productsNew],
-      cartItems: [...cartItemsNew, { ...item, quantity: 1 }],
+      cartItems: [{ ...item, quantity: 1 }, ...cartItemsNew],
     };
   } else {
     let objIndex = cartItemsNew.findIndex((item) => item.id === id);
@@ -30,38 +30,43 @@ export const addHandler = (state, id) => {
 
 export const incrementHandler = (state, id) => {
   const stateObj = { ...state };
-  let objIndex = [...stateObj.cartItems].findIndex((item) => item.id === id);
-  let productIndex = [...stateObj.products].findIndex((item) => item.id === id);
-  stateObj.cartItems[objIndex].quantity =
-    stateObj.cartItems[objIndex].quantity + 1;
-  stateObj.products[productIndex].stockQuantity =
-    stateObj.products[productIndex].stockQuantity - 1;
+  const productsNew = [...stateObj.products];
+  const cartItemsNew = [...stateObj.cartItems];
+  let objIndex = cartItemsNew.findIndex((item) => item.id === id);
+  let productIndex = productsNew.findIndex((item) => item.id === id);
+  cartItemsNew[objIndex].quantity = cartItemsNew[objIndex].quantity + 1;
+  productsNew[productIndex].stockQuantity =
+    productsNew[productIndex].stockQuantity - 1;
 
   return {
     ...stateObj,
+    products: [...productsNew],
+    cartItems: [...cartItemsNew],
   };
 };
 
 export const decrementHandler = (state, id) => {
   const stateObj = { ...state };
-  let objIndex = [...stateObj.cartItems].findIndex((item) => item.id === id);
-  let productIndex = [...stateObj.products].findIndex((item) => item.id === id);
-  stateObj.cartItems[objIndex].quantity =
-    stateObj.cartItems[objIndex].quantity - 1;
-  stateObj.products[productIndex].stockQuantity =
-    stateObj.products[productIndex].stockQuantity + 1;
+  const productsNew = [...stateObj.products];
+  const cartItemsNew = [...stateObj.cartItems];
+  let objIndex = cartItemsNew.findIndex((item) => item.id === id);
+  let productIndex = [...productsNew].findIndex((item) => item.id === id);
+  cartItemsNew[objIndex].quantity = cartItemsNew[objIndex].quantity - 1;
+  productsNew[productIndex].stockQuantity =
+    productsNew[productIndex].stockQuantity + 1;
 
-  if (stateObj.cartItems[objIndex].quantity < 1) {
-    const modifiedCartItems = stateObj?.cartItems?.filter(
-      (item) => item?.id !== id
-    );
+  if (cartItemsNew[objIndex].quantity < 1) {
+    const modifiedCartItems = cartItemsNew.filter((item) => item?.id !== id);
     return {
       ...stateObj,
+      products: [...productsNew],
       cartItems: [...modifiedCartItems],
     };
   }
 
   return {
     ...stateObj,
+    products: [...productsNew],
+    cartItems: [...cartItemsNew],
   };
 };
